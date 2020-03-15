@@ -1,0 +1,11 @@
+<!--index.wxml-->
+<view>
+  <view wx:for="{{users}}"  wx:for-item="user" wx:key="index" class="user-container">
+    <view class="flex-wrp" style="flex-direction:row;">
+      <view class="number flex-item">{{index + 1}}</view>
+      <view class="role flex-item">{{user.role}}</view>
+      <view wx:for="{{user.labels}}"  wx:for-item="label" wx:key="i2"   class="label flex-item">{{label}}</view>
+    </view>
+    <textarea class="weui-input user-msg" auto-focus auto-height="true" value="{{user.msg}}" placeholder="请输入备注"/>
+  </view>
+</view>
