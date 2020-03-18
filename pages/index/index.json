@@ -1,3 +1,17 @@
 {
-  "usingComponents": {}
+  "usingComponents": {
+    "v-button": "../../com/button/index",
+    "v-row": "../../com/row/index",
+    "v-col": "../../com/col/index",
+    "v-tag": "../../com/tag/index",
+    "van-field": "../../com/field/index",
+    "v-checkbox-group": "../../com/checkbox-group/index",
+    "v-checkbox": "../../com/checkbox/index",
+    "v-action-sheet": "../../com/action-sheet/index",
+    "van-grid-item": "../../com/grid-item/index",
+    "van-divider": "../../com/divider/index",
+    "van-grid": "../../com/grid/index",
+    "van-overlay": "../../com/overlay/index",
+    "v-dialog": "../../com/dialog/index"
+  }
 }
