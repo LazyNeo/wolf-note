@@ -28,8 +28,9 @@
       <v-col span="3" data-index="{{index}}" data-item="{{day}}"  bindtap="toggleDayUpUserModal">
         <view class="number">+</view>
       </v-col>
-      <v-col data-index="{{index}}" data-item="{{day}}" span="2"  bindtap="toggleDayUpUserModal">
-        <text>{{day.upUsers.msg}}</text>
+      <v-col span="16" offset="1">
+        <view data-index="{{index}}" data-item="{{day}}"  bindtap="toggleDayUpUserModal">{{day.upUsers.msg}}</view>
+        <view>{{day.upUsers.msg2}}</view>
       </v-col>
     </v-row>
     <!-- 上警投票 -->
@@ -40,8 +41,8 @@
       <v-col span="3">
         <view class="number" data-index="{{index}}" bindtap="addUpVote">+</view>
       </v-col>
-      <v-col  wx:for="{{day.upVotes}}"  wx:for-item="u" data-index="{{index}}" data-vi="{{i2}}" data-item="{{day}}" span="2" wx:key="i2"  wx:for-index="i2" span="6" offset="1" data-index="{{index}}" data-item="{{day}}"  bindtap="changeUpVote">
-        <text>{{u.msg}}</text>
+      <v-col span="16" offset="1">
+        <view wx:for="{{day.upVotes}}"  wx:for-item="u" data-index="{{index}}" data-vi="{{i2}}" data-item="{{day}}" span="2" wx:key="i2"  wx:for-index="i2"  data-index="{{index}}" data-item="{{day}}"  bindtap="changeUpVote" >{{u.msg}}</view>
       </v-col>
     </v-row>
     <!-- 夜晚信息 -->
@@ -52,7 +53,7 @@
       <v-col span="3">
         <view class="number" data-index="{{index}}" bindtap="changeNight">+</view>
       </v-col>
-      <v-col data-index="{{index}}" data-item="{{day}}" span="10"  bindtap="changeNight">
+      <v-col data-index="{{index}}" data-item="{{day}}" span="16" offset="1"  bindtap="changeNight">
         <text>{{day.nights.msg}}</text>
       </v-col>
     </v-row>
@@ -64,8 +65,8 @@
       <v-col span="3">
         <view class="number" data-index="{{index}}" bindtap="addEvent">+</view>
       </v-col>
-      <v-col  wx:for="{{day.events}}"  wx:for-item="u" data-index="{{index}}" data-vi="{{i2}}" data-item="{{day}}" span="2" wx:key="i2"  wx:for-index="i2" span="6" offset="1" data-index="{{index}}" data-item="{{u}}"  bindtap="changeEvent">
-        <text>{{u.msg}}</text>
+      <v-col  span="16" offset="1">
+        <view wx:for="{{day.events}}"  wx:for-item="u" data-index="{{index}}" data-vi="{{i2}}" data-item="{{day}}" span="2" wx:key="i2"  data-index="{{index}}" data-item="{{u}}"  wx:for-index="i2" bindtap="changeEvent" >{{u.msg}}</view>
       </v-col>
     </v-row>
   </view>

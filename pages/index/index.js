@@ -1,7 +1,7 @@
 //index.js
 //获取应用实例
 const app = getApp()
-
+import { deepCopy} from '../../utils/util.js'
 Page({
   data: {
     motto: 'Hello World',
@@ -36,6 +36,8 @@ Page({
       { name: '守卫', value: '守' },
       { name: '白痴', value: '痴' },
       { name: '噩梦之影', value: '噩' },
+      { name: '潜行者', value: '潜' },
+      { name: '猎魔人', value: '魔' },
       { name: '白狼王', value: '白' },
       { name: '狼王', value: '王' },
       { name: '狼美人', value: '美' },
@@ -79,16 +81,30 @@ Page({
     })
   },
   onLoad: function () {
+    let userNum = wx.getStorageSync("userNum")
+    if (userNum) {
+      this.setData({
+        userNum
+      })
+    }
     this.resetData()
+  },
+  onUnload: function () {
+    wx.setStorage({
+      key: "userNum",
+      data: this.data.userNum
+    })
   },
   resetData () {
     let users = []
     for (let i = 0; i < this.data.userNum; i++) {
-      users.push(Object.assign({ name: i + 1 }, this.data.baseUser))
+      let u = deepCopy(this.data.baseUser)
+      u.name = i + 1
+      users.push(u)
     }
     let days = []
     for (let i = 0; i < this.data.dayNum; i++) {
-      days.push(Object.assign({}, this.data.baseDay))
+      days.push(deepCopy(this.data.baseDay))
     }
     this.setData({
       users,
@@ -118,7 +134,7 @@ Page({
         }
         if (res.tapIndex == 1) {
           let days = page.data.days
-          days.push(Object.assign({}, page.data.baseDay))
+          days.push(deepCopy(page.data.baseDay))
           page.setData({
             days
           })
@@ -153,7 +169,9 @@ Page({
       users = users.slice(0, this.data.userNum)
     } else {
       for (let i = users.length; i < this.data.userNum; i++) {
-        users.push(Object.assign({name: i + 1}, this.data.baseUser))
+        let u = deepCopy(this.data.baseUser)
+        u.name = i + 1
+        users.push(u)
       }
     }
     console.log(users)
@@ -210,7 +228,7 @@ Page({
         }
       }
       l.icon = choose ? 'passed' : 'close'
-      curLabels.push(Object.assign({}, l))
+      curLabels.push(deepCopy(l))
     }
     this.setData({
       labels: curLabels,
@@ -288,7 +306,7 @@ Page({
         }
       }
       l.icon = choose ? 'passed' : 'close'
-      curUsers.push(Object.assign({}, l))
+      curUsers.push(deepCopy(l))
     }
     this.setData({
       curUsers: curUsers,
@@ -307,18 +325,24 @@ Page({
   comfirmUserNums() {
     let days = this.data.days
     let curUsers = this.data.curUsers
+    // 已选择
     let us = []
+    // 未选择
+    let us2 = []
     for (let i = 0; i < curUsers.length; i++) {
       let l = curUsers[i]
       if (l.icon == 'passed') {
         us.push(i)
+      } else {
+        us2.push(i)
       }
     }
     if (this.data.voteState == 'uppre') {
       // 谁上警
       days[this.data.curDayIndex].upUsers = {
         list: us,
-        msg: this.getJoins(us) + ' 上警'
+        msg: this.getJoins(us) + ' 上警',
+        msg2: this.getJoins(us2) + ' 警下'
       }
       this.setData({
         userNumShow: false,
@@ -393,9 +417,15 @@ Page({
         vote.to = u - 1
         vote.msg = this.getJoins(vote.from) + ' ➣ ' + u
       } else {
-        this.data.curVoteIndex = day.events.length
-        let vote = {
-          to: u - 1
+        let vote
+        if (this.data.curVoteIndex != -1) {
+          // 已有的,修改
+          vote = day.events[this.data.curVoteIndex]
+        } else {
+          // 新增
+          vote = {
+            to: u - 1
+          }
         }
         if (voteType == 'ex') {
           vote.type = 'ex'
@@ -404,7 +434,10 @@ Page({
           vote.type = 'die'
           vote.msg = u + ' 死亡'
         }
-        day.events.push(vote)
+        if (this.data.curVoteIndex == -1) {
+          // 新增
+          day.events.push(vote)
+        }
       }
     }
     this.setData({
