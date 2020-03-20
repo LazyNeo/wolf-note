@@ -1,10 +1,10 @@
 /**index.wxss**/
 .user-container {
   width: 100%;
-  /* min-height: 115rpx; */
+  min-height: 72rpx;
   padding: 10rpx;
-  display: block;
-  border-bottom: #aaa 1px dashed;
+  /* display: block; */
+  /* border-bottom: #aaa 1px dashed; */
   z-index: -1;
 }
 .flex-wrp{

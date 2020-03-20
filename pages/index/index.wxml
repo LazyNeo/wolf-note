@@ -1,5 +1,5 @@
 <!--index.wxml-->
-<view style="padding-bottom:100rpx;">
+<view style="padding:0 10rpx 100rpx 10rpx ;">
   <view wx:for="{{users}}"  wx:for-item="user" wx:key="label" wx:for-index="index"  class="user-container">
     <v-row>
       <v-col span="2">
@@ -9,7 +9,7 @@
         <view class="role" data-index='{{index}}' bindtap="toggleUserRoleModal">{{user.role}}</view>
       </v-col>
       <v-col span="3" offset="1" data-index="{{index}}" data-item="{{user}}"  bindtap="toggleUserLabelModal" >
-        <v-tag wx:if="{{!user.labels || user.labels.length == 0}}" >请选择</v-tag>
+        <v-tag wx:if="{{!user.labels || user.labels.length == 0}}" >标签</v-tag>
         <v-tag wx:for="{{user.labels}}"  wx:for-item="label" data-index="{{index}}" data-item="{{user}}" wx:key="i2"  wx:for-index="i2" type="success">{{label}}</v-tag>
       </v-col>
       <v-col span="16">
@@ -42,7 +42,7 @@
         <view class="number" data-index="{{index}}" bindtap="addUpVote">+</view>
       </v-col>
       <v-col span="16" offset="1">
-        <view wx:for="{{day.upVotes}}"  wx:for-item="u" data-index="{{index}}" data-vi="{{i2}}" data-item="{{day}}" span="2" wx:key="i2"  wx:for-index="i2"  data-index="{{index}}" data-item="{{day}}"  bindtap="changeUpVote" >{{u.msg}}</view>
+        <view wx:for="{{day.upVotes}}"  wx:for-item="u" data-type="upVotes" data-index="{{index}}" data-vi="{{i2}}" data-item="{{day}}" span="2" wx:key="i2"  wx:for-index="i2"  data-index="{{index}}" data-item="{{day}}"  bindtap="changeUpVote" bindlongpress="deleteItem">{{u.msg}}</view>
       </v-col>
     </v-row>
     <!-- 夜晚信息 -->
@@ -66,7 +66,7 @@
         <view class="number" data-index="{{index}}" bindtap="addEvent">+</view>
       </v-col>
       <v-col  span="16" offset="1">
-        <view wx:for="{{day.events}}"  wx:for-item="u" data-index="{{index}}" data-vi="{{i2}}" data-item="{{day}}" span="2" wx:key="i2"  data-index="{{index}}" data-item="{{u}}"  wx:for-index="i2" bindtap="changeEvent" >{{u.msg}}</view>
+        <view wx:for="{{day.events}}"  wx:for-item="u" data-index="{{index}}" data-type="events" data-vi="{{i2}}" data-item="{{day}}" span="2" wx:key="i2"  data-index="{{index}}" data-item="{{u}}"  wx:for-index="i2" bindtap="changeEvent"  bindlongpress="deleteItem">{{u.msg}}</view>
       </v-col>
     </v-row>
   </view>
@@ -76,6 +76,7 @@
   <v-dialog
     use-slot
     title="请输入人数"
+    bind:cancel="hiddenAll"
     show="{{ userNumModalShow }}"
     show-cancel-button
     bind:confirm="comfirmUserNum">
@@ -86,6 +87,7 @@
     use-slot
     title="请输入人数"
     show="{{ userLabelModalShow }}"
+    bind:cancel="hiddenAll"
     show-cancel-button
     bind:confirm="comfirmUserLabel">
     <van-grid column-num="4">
@@ -99,6 +101,7 @@
     title="请选择编号"
     show="{{ userNumShow }}"
     show-cancel-button
+    bind:cancel="hiddenAll"
     bind:confirm="comfirmUserNums">
     <van-grid column-num="4">
       <van-grid-item icon="{{l.icon}}" text="{{i2 + 1}}" wx:for="{{curUsers}}"  wx:for-item="l" wx:key="label" wx:for-index="i2" data-index="{{i2}}" bindtap="toggleUserNumChoose">
@@ -115,7 +118,6 @@
     </van-grid>
   </van-overlay>
   <van-overlay
-  z-index="100000"
     show="{{ userRoleShow }}">
     <van-grid column-num="4">
       <van-grid-item icon="question-o" text="{{l.name}}" wx:for="{{roles}}"  wx:for-item="l" wx:key="label" wx:for-index="i2" data-index="{{i2}}" data-item="{{l}}" bindtap="comfirmUserRole">

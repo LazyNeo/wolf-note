@@ -26,21 +26,23 @@ Page({
     roles: [
       { name: '未知', value: '?' },
       { name: '平民', value: '民' },
-      { name: '狼人', value: '狼' },
       { name: '预言家', value: '预' },
+      { name: '狼人', value: '狼' },
       { name: '女巫', value: '巫' },
+      { name: '守卫', value: '守' },
+      { name: '白痴', value: '痴' },
       { name: '猎人', value: '猎' },
       { name: '混血儿', value: '混' },
       { name: '摄梦人', value: '摄' },
       { name: '骑士', value: '骑' },
-      { name: '守卫', value: '守' },
-      { name: '白痴', value: '痴' },
-      { name: '噩梦之影', value: '噩' },
       { name: '潜行者', value: '潜' },
       { name: '猎魔人', value: '魔' },
+      { name: '禁言长老', value: '禁' },
       { name: '白狼王', value: '白' },
       { name: '狼王', value: '王' },
+      { name: '噩梦之影', value: '噩' },
       { name: '狼美人', value: '美' },
+      { name: '丘比特', value: '丘' },
     ],
     // 标签
     labels: [
@@ -148,6 +150,39 @@ Page({
       fail(res) {
       }
     })
+  },
+  hiddenAll () {
+    this.setData({
+      userNumModalShow: false,
+      userRoleModalShow: false,
+      userLabelModalShow: false,
+      userNumShow: false,
+      userNumSingleShow: false,
+      userRoleShow: false
+    })
+  },
+  deleteItem (e) {
+    let t = e.currentTarget.dataset.type
+    let dayIndex = e.currentTarget.dataset.index
+    let voteIndex = e.currentTarget.dataset.vi
+    let days = this.data.days
+    console.log('deleteItem', t)
+    if (t == 'upVotes') {
+      // 上警投票
+      days[dayIndex].upVotes.splice(voteIndex, 1)
+      this.setData({
+        days
+      })
+      return
+    }
+    if (t == 'events') {
+      // 上警投票
+      days[dayIndex].events.splice(voteIndex, 1)
+      this.setData({
+        days
+      })
+      return
+    }
   },
   // 输入人数
   bindUserNumInput (e) {
@@ -410,12 +445,12 @@ Page({
       // 上警
       let vote = day.upVotes[this.data.curVoteIndex]
       vote.to = u - 1
-      vote.msg = this.getJoins(vote.from) + ' ➣ ' + u
+      vote.msg = this.getJoins(vote.from) + ' ⇨ ' + u
     } else {
       if (voteType == 'to') {
         let vote = day.events[this.data.curVoteIndex]
         vote.to = u - 1
-        vote.msg = this.getJoins(vote.from) + ' ➣ ' + u
+        vote.msg = this.getJoins(vote.from) + ' ⇨ ' + u
       } else {
         let vote
         if (this.data.curVoteIndex != -1) {
